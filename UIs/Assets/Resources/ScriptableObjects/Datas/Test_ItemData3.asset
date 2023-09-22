@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03192375806fbda4c8cadca0c3ec46d1, type: 3}
-  m_Name: Shield_ItemData
+  m_Name: Test_ItemData3
   m_EditorClassIdentifier: 
-  displayName: "\uB465\uADFC \uBC29\uD328"
-  description: "\uAC00\uBCBC\uC6B8 \uAC83 \uAC19\uC740 \uBC29\uD328\uB2E4."
-  icon: {fileID: 21300000, guid: 8140b5720d38ee84fb4196fe1a210b62, type: 3}
+  displayName: "\uCE7C"
+  description: "\uBAA9\uC774 \uCE7C\uCE7C\uD574"
+  icon: {fileID: 21300000, guid: 789e518168d493d4396ec984b1b5bcb3, type: 3}
   gold: 2000
   addedStats:
-  - type: 2
+  - type: 1
     value: 50
-    icon: {fileID: 21300000, guid: 8140b5720d38ee84fb4196fe1a210b62, type: 3}
-  - type: 0
-    value: 20
-    icon: {fileID: 21300000, guid: 8140b5720d38ee84fb4196fe1a210b62, type: 3}
+    icon: {fileID: 21300000, guid: 1ff1175d56df9eb4f8cfa0ba429d9254, type: 3}
+  - type: 3
+    value: 10
+    icon: {fileID: 21300000, guid: 8cb4df65c6f4a2e499814646147fbc0a, type: 3}

@@ -9,9 +9,9 @@ public class Item
     public bool IsEquip { get; set; }
     public Dictionary<AddedStatType , float> _addedStats = new Dictionary<AddedStatType , float>();
     
-    public void TestCreate()
+    public void TestCreate(int DataCount)
     {
-        _data = Managers.Instance.Load<ItemData>("ScriptableObjects/Datas/Shield_ItemData");
+        _data = Managers.Instance.Load<ItemData>("ScriptableObjects/Datas/Test_ItemData"+DataCount.ToString());
         InitSetting();
     }
     public void InitSetting()

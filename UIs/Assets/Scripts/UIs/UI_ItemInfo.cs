@@ -27,7 +27,8 @@ public class UI_ItemInfo : UI_Popup
     enum Buttons
     {
         CancelButton,
-        ActionButton
+        ActionButton,
+        SellButton
     }
 
     protected override void Awake()
@@ -36,6 +37,12 @@ public class UI_ItemInfo : UI_Popup
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
+    }
+    protected void Start()
+    {
+        GetButton((int)Buttons.ActionButton).gameObject.BindEvent(OnClickedActionButton);
+        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(OnClickedCancelButton);
+        GetButton((int)Buttons.SellButton).gameObject.BindEvent(OnClickedSellButton);
     }
 
 
@@ -64,13 +71,18 @@ public class UI_ItemInfo : UI_Popup
         _curItemUI = null;
         Managers.Instance.TogglePopupUI(this);
     }
+
+    public void OnClickedSellButton(PointerEventData data)
+    {
+        _curItemUI.SellItem();
+        _curItem = null;
+        _curItemUI = null;
+        Managers.Instance.TogglePopupUI(this);
+    }
     public override void Refresh()
     {
         if (_curItem == null)
             return;
-
-        GetButton((int)Buttons.ActionButton).gameObject.BindEvent(OnClickedActionButton);
-        GetButton((int)Buttons.CancelButton).gameObject.BindEvent(OnClickedCancelButton);
 
         GetImage((int)Images.ItemImage).sprite = _curItem._data.icon;
 

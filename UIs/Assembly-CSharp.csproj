@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Utils\Extension.cs" />
     <Compile Include="Assets\Scripts\UIs\UI_Base.cs" />
+    <Compile Include="Assets\FantasyIconsPackFree\Demo\IconViewer.cs" />
     <Compile Include="Assets\Scripts\Stats\Stats.cs" />
     <Compile Include="Assets\Scripts\Managers\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Scenes\SampleScene.cs" />

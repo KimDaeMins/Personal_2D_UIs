@@ -31,9 +31,12 @@ public class Inventory : MonoBehaviour
             _itemSlots[i] = new ItemSlot();
         }
 
-        Item item = new Item();
-        item.TestCreate();
-        _itemSlots[0].item = item;
+        for (int i = 0 ; i < 9 ; ++i)
+        {
+            Item item = new Item();
+            item.TestCreate(i);
+            _itemSlots[i].item = item;
+        }
     }
 
     public int GetNowItemCount()
@@ -74,6 +77,22 @@ public class Inventory : MonoBehaviour
             emptySlot.item.InitSetting();
             UpdateUI();
             return;
+        }
+    }
+
+    public void SellItem(Item item)
+    {
+
+        for(int i = 0; i < _itemSlots.Length; i++)
+        {
+            if(_itemSlots[i].item == item)
+            {
+                CharacterStatsHandler handler = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStatsHandler>();
+                if (_itemSlots[i].item.IsEquip)
+                    handler.RemoveStatModifier(_itemSlots[i].item._stat);
+                handler.CurrentStats._gold += _itemSlots[i].item._data.gold;
+                _itemSlots[i].item = null;
+            }
         }
     }
 

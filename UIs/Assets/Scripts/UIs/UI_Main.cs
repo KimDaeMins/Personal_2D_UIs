@@ -72,6 +72,7 @@ public class UI_Main : UI_Scene
     }
     public void OnClickedShop(PointerEventData data)
     {
-        Managers.Instance.TogglePopupUI<UI_Popup>("UI_StatusPopUp");
+        //Managers.Instance.TogglePopupUI<UI_Popup>("UI_StatusPopUp");
+        Debug.Log("¹Ì±¸Çö");
     }
 }

@@ -36,7 +36,12 @@ public class UI_Item : UI_Base
         UI_ItemInfo popup = Managers.Instance.TogglePopupUI<UI_ItemInfo>();
         popup.Refresh(_curItem, this);
     }
-
+    public void SellItem()
+    {
+        Inventory.Instance.SellItem(_curItem);
+        _curItem = null;
+        Refresh();
+    }
 
     public override void Refresh()
     {
