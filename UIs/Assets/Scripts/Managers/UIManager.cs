@@ -182,6 +182,22 @@ public class UIManager : MonoBehaviour
 
         return _popupList.Last.Value as T;
     }
+    public void OpenPopupRefresh()
+    {
+        LinkedListNode<UI_Popup> currentNode = _popupList.Last;
+        while (currentNode != null)
+        {
+            UI_Popup ui = currentNode.Value;
+            if (ui == null)
+                break;
+
+            if (ui.gameObject.activeSelf)
+            {
+                ui.Refresh();
+            }
+            currentNode = currentNode.Previous;
+        }
+    }
     public void ClosePopupUI(UI_Popup popup = null)
     {
         if (_popupList.Count == 0)

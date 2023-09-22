@@ -92,6 +92,8 @@ public class Inventory : MonoBehaviour
                     handler.RemoveStatModifier(_itemSlots[i].item._stat);
                 handler.CurrentStats._gold += _itemSlots[i].item._data.gold;
                 _itemSlots[i].item = null;
+                Managers.Instance.GetSceneUI().Refresh();
+                Managers.Instance.OpenPopupRefresh();
             }
         }
     }

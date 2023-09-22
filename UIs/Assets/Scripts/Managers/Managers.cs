@@ -143,6 +143,14 @@ public class Managers : MonoBehaviour
     #endregion
 
     #region UI
+    public void OpenPopupRefresh()
+    {
+        _ui.OpenPopupRefresh();
+    }
+    public UI_Scene GetSceneUI()
+    {
+        return _ui.SceneUI;
+    }
     public void SetCanvas(GameObject go , bool sort = true)
     {
         _ui.SetCanvas(go , sort);
