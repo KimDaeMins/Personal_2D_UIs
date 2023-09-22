@@ -37,6 +37,7 @@ public class UI_CharacterStat : UI_Popup
 
     public void OnCllickedQuitButton(PointerEventData data)
     {
+        ( (UI_Main)Managers.Instance.GetSceneUI() ).ButtonOn();
         Managers.Instance.TogglePopupUI(this);
     }
     public override void Refresh()

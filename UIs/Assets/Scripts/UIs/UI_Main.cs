@@ -59,10 +59,24 @@ public class UI_Main : UI_Scene
         GetImage((int)Images.ExpBarImage).fillAmount = ( _handler.CurrentStats._exp / _handler.CurrentStats._expMax );
     }
 
+    public void HideButton()
+    {
+        GetButton((int)Buttons.StatusButton).gameObject.SetActive(false);
+        GetButton((int)Buttons.InventoryButton).gameObject.SetActive(false);
+        GetButton((int)Buttons.ShopButton).gameObject.SetActive(false);
+    }
+
+    public void ButtonOn()
+    {
+        GetButton((int)Buttons.StatusButton).gameObject.SetActive(true);
+        GetButton((int)Buttons.InventoryButton).gameObject.SetActive(true);
+        GetButton((int)Buttons.ShopButton).gameObject.SetActive(true);
+    }
 
     public void OnClickedStatus(PointerEventData data)
     {
         UI_Popup pu = Managers.Instance.TogglePopupUI<UI_Popup>("UI_CharacterStat");
+        HideButton();
         pu.Refresh();
     }
     public void OnClickedInventory(PointerEventData data)
