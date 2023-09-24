@@ -23,22 +23,6 @@ public class UIManager : MonoBehaviour
             return _root;
         }
     }
-    private void SetSortOrder(GameObject go, bool sort)
-    {
-        Canvas canvas = go.GetOrAddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true;
-
-        if (sort)
-        {
-            canvas.sortingOrder = _order;
-            _order++;
-        }
-        else
-        {
-            canvas.sortingOrder = 0;
-        }
-    }
     public void SetCanvas(GameObject go , bool sort = true)
     {
         UI_Popup popup = Util.FindRoot<UI_Popup>(go);
@@ -53,11 +37,53 @@ public class UIManager : MonoBehaviour
     }
     public void SetCanvas(UI_Popup popup , bool sort = true)
     {
-        SetSortOrder(popup.gameObject , sort);
-
         _popupList.Remove(popup);
         _popupList.AddLast(popup);
         popup.gameObject.SetActive(true);
+
+        SetSortOrder(popup.gameObject , sort);
+    }
+    private void SetSortOrder(GameObject go , bool sort)
+    {
+        Canvas canvas = go.GetOrAddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.overrideSorting = true;
+
+        if (sort)
+        {
+            if (_order > 30000)
+            {
+                ResetSortOrder();
+            }
+            else
+            {
+                canvas.sortingOrder = _order;
+                _order++;
+            }
+        }
+        else
+        {
+            canvas.sortingOrder = 0;
+        }
+    }
+    private void ResetSortOrder()
+    {
+        _order = 10;
+
+        LinkedListNode<UI_Popup> currentNode = _popupList.First;
+
+        while (currentNode != null)
+        {
+            UI_Popup ui = currentNode.Value;
+            currentNode = currentNode.Next;
+            if (ui == null)
+                continue;
+
+            if (ui.gameObject.activeSelf)
+            {
+                SetSortOrder(ui.gameObject , true);
+            }
+        }
     }
     public T MakeSubItem<T>(string name = null , Transform parent = null) where T : UI_Base
     {
@@ -71,7 +97,6 @@ public class UIManager : MonoBehaviour
 
         return go.GetOrAddComponent<T>();
     }
-
     public T MakeWorldSpaceUI<T>(Transform parent = null , string name = null) where T : UI_Base
     {
         if (string.IsNullOrEmpty(name))
@@ -95,6 +120,7 @@ public class UIManager : MonoBehaviour
         }
 
         GameObject go = Managers.Instance.Instantiate($"UI/Scene/{name}");
+        go.name = name;
 
         T scene = Util.GetOrAddComponent<T>(go);
         SceneUI = scene;
@@ -108,25 +134,28 @@ public class UIManager : MonoBehaviour
         T popup = FindPopup<T>(name);
         if (popup == null)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                name = typeof(T).Name;
-            }
-
-            GameObject go = Managers.Instance.Instantiate($"UI/Popup/{name}");
-
-            popup = Util.GetOrAddComponent<T>(go);
+            popup = CreatePopupUI<T>(name);
         }
-
-        popup.transform.SetParent(Root.transform);
+        else if(popup.gameObject.activeSelf)
+        {
+            ClosePopupUI(popup);
+        }
+        else
+        {
+            SetCanvas(popup);
+        }
 
         return popup;
     }
     public void TogglePopupUI<T>(T popup) where T : UI_Popup
     {
-        if(popup.gameObject.activeSelf)
+        if(popup == null)
         {
-            HidePopupUI(popup);
+            popup = ShowPopupUI<T>(typeof(T).Name);
+        }
+        else if(popup.gameObject.activeSelf)
+        {
+            ClosePopupUI(popup);
         }
         else
         {
@@ -135,43 +164,53 @@ public class UIManager : MonoBehaviour
     }
     public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
-
         T popup = FindPopup<T>(name);
         if (popup == null)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                name = typeof(T).Name;
-            }
-
-            GameObject go = Managers.Instance.Instantiate($"UI/Popup/{name}");
-
-            popup = Util.GetOrAddComponent<T>(go);
-            _popupList.AddLast(popup);
+            popup = CreatePopupUI<T>(name);
         }
         else
         {
             SetCanvas(popup);
         }
 
-        popup.transform.SetParent(Root.transform);
+        return popup;
+    }
+    private T CreatePopupUI<T>(string name = null) where T : UI_Popup
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            name = typeof(T).Name;
+        }
 
+        GameObject go = Managers.Instance.Instantiate($"UI/Popup/{name}");
+
+        go.name = name;
+        T popup = Util.GetOrAddComponent<T>(go);
+        popup.transform.SetParent(Root.transform);
         return popup;
     }
     public T FindPopup<T>(string name = null) where T : UI_Popup
     {
         LinkedListNode<UI_Popup> currentNode = _popupList.Last;
-        while(currentNode != null)
+
+        if (string.IsNullOrEmpty(name))
+        {
+            name = typeof(T).Name;
+        }
+
+        while (currentNode != null)
         {
             UI_Popup ui = currentNode.Value;
+            currentNode = currentNode.Previous;
             if (ui == null)
-                break;
-            if ((string.IsNullOrEmpty(name) && ui.GetType() == typeof(T)) || ui.name == name)
+                continue;
+
+            if (ui.name == name)
             {
                 if (ui.gameObject.activeSelf)
                     return ui as T;
             }
-            currentNode = currentNode.Previous;
         }
         return null;
     }
@@ -203,35 +242,41 @@ public class UIManager : MonoBehaviour
         if (_popupList.Count == 0)
             return;
 
-        if (popup != null)
-        {
-            DestroyPopupUI(popup);
-            return;
-        }
+        if (popup == null)
+            popup = _popupList.Last.Value;
 
-        popup = _popupList.Last.Value;
-        DestroyPopupUI(popup);
-        _order--;
+        if (popup._useSetActive)
+            HidePopupUI(popup);
+        else
+            DestroyPopupUI(popup);
     }
-    public void HidePopupUI(UI_Popup popup)
+    private void HidePopupUI(UI_Popup popup)
     {
         popup.gameObject.SetActive(false);
     }
-
     private void DestroyPopupUI(UI_Popup popup)
     {
         _popupList.Remove(popup);
         Managers.Instance.Destroy(popup.gameObject);
+        popup = null;
     }
     public void CloseAllPopupUI()
     {
-        _popupList.Clear();
+        LinkedListNode<UI_Popup> currentNode = _popupList.Last;
+        while(currentNode != null)
+        {
+            UI_Popup ui = currentNode.Value;
+            currentNode = currentNode.Previous;
+            if (ui == null)
+                continue;
+            ClosePopupUI(ui);
+        }
         _order = 10;
     }
-
     public void Clear()
     {
         CloseAllPopupUI();
+        _popupList.Clear();
         SceneUI = null;
         _root = null;
     }

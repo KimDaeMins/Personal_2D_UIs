@@ -83,9 +83,9 @@ public class UI_Inventory : UI_Popup
 
         for(int i = 0 ; i < itemCount ; ++i)
         {
-            GameObject item = Managers.Instance.Instantiate("UI/SubItem/UI_Item" , _scroll.content);
+            UI_Item item = Managers.Instance.MakeSubItem<UI_Item>("UI_Item" , _scroll.content);
 
-            _itemList.Add(item.GetComponent<UI_Item>());
+            _itemList.Add(item);
 
             item.transform.localPosition = new Vector3
                 (_paddingLeft + _itemWidth * (i % _horizonCount ) + _spacingX * ( i % _horizonCount ) ,

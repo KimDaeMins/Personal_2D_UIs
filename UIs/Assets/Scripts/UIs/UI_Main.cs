@@ -47,8 +47,6 @@ public class UI_Main : UI_Scene
 
     public override void Refresh()
     {
-        //아 빨리끝내고 유아이매니저나 뜯어고치고싶다~ 라는 마음이 들어가서 이렇게 만들어졌네
-        base.Refresh();
         GetText((int)Texts.NameText).text = _handler.CurrentStats._name;
         GetText((int)Texts.LevelText).text = _handler.CurrentStats._level.ToString();
         GetText((int)Texts.JobText).text = _handler.CurrentStats._job;

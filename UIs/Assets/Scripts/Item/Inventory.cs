@@ -24,7 +24,7 @@ public class Inventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPrefs.SetInt("InvenSize" , 10000);
+        PlayerPrefs.SetInt("InvenSize" , 100000);
         _itemSlots = new ItemSlot[PlayerPrefs.GetInt("InvenSize")];
         for (int i = 0 ; i < _itemSlots.Length ; ++i)
         {

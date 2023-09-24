@@ -6,19 +6,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//1. 아이콘은 앵커를 왼쪽위로둔다
-//2. 아이콘의 피봇을 x= 0 y = 1로둔다 이건필수
-//-------------------------------------------
-//3. 뷰포트에 그리드패널을 두고 좌표를 미리 맞춰논다
-//4. 가로갯수,아이콘크기  귀찮음이슈로 안넣었다 직접 넣어줘야한다
  
 public abstract class UI_Base : MonoBehaviour
 {
     Dictionary<Type , UnityEngine.Object[]> _objects = new Dictionary<Type , UnityEngine.Object[]>();
-
     public abstract void Init();
 
     public abstract void Refresh();
+
 
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {

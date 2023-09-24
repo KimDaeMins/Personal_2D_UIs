@@ -42,14 +42,10 @@ public class UI_CharacterStat : UI_Popup
     }
     public override void Refresh()
     {
-        base.Refresh();
-
-
         GetText((int)Texts.AttackValueText).text = _handler.CurrentStats._att.ToString();
         GetText((int)Texts.DefValueText).text = _handler.CurrentStats._def.ToString();
         GetText((int)Texts.HpValueText).text = _handler.CurrentStats._hp.ToString(); 
         GetText((int)Texts.CriticalValueText).text = _handler.CurrentStats._critical.ToString();
-
     }
 
 }

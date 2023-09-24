@@ -163,6 +163,11 @@ public class Managers : MonoBehaviour
     {
         return _ui.MakeWorldSpaceUI<T>(parent , name);
     }
+    public T MakeSubItem<T>(string name = null , Transform parent = null) where T : UI_Base
+    {
+        return _ui.MakeSubItem<T>(name, parent);
+    }
+    
     public T ShowSceneUI<T>(string name = null) where T : UI_Scene
     {
         return _ui.ShowSceneUI<T>(name);
@@ -170,15 +175,16 @@ public class Managers : MonoBehaviour
 
     public T TogglePopupUI<T>(string name = null) where T : UI_Popup
     {
-        return _ui.TogglePopupUI<T>(name);
-    }
-    public T ShowPopupUI<T>(string name = null) where T : UI_Popup
-    {
-        return _ui.ShowPopupUI<T>(name);
+       return _ui.TogglePopupUI<T>(name);
     }
     public void TogglePopupUI<T>(T popup) where T : UI_Popup
     {
         _ui.TogglePopupUI<T>(popup);
+    }
+
+    public T ShowPopupUI<T>(string name = null) where T : UI_Popup
+    {
+        return _ui.ShowPopupUI<T>(name);
     }
     public T FindPopup<T>(string name = null) where T : UI_Popup
     {
@@ -188,17 +194,13 @@ public class Managers : MonoBehaviour
     {
         return _ui.GetLastPopupUI<T>();
     }
-    public void HidePopupUI(UI_Popup popup = null)
+    public void CloseAllPopupUI()
     {
-        _ui.HidePopupUI(popup);
+        _ui.CloseAllPopupUI();
     }
     public void ClosePopupUI(UI_Popup popup = null)
     {
         _ui.ClosePopupUI(popup);
-    }
-    public void CloseAllPopupUI()
-    {
-        _ui.CloseAllPopupUI();
     }
     #endregion
 }
